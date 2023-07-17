@@ -6,10 +6,12 @@ import cookieParser from 'cookie-parser'
 import morgan from 'morgan'
 import cors from 'cors'
 import { errorMiddleware } from './middleware/error'
-import { sessionMiddleware } from './middleware/session'
-import { ErrorHandler } from './utils/errorHandler'
+
 
 /** Routes imports */
+import { inventarioRouter } from './api/inventario/inventario.routes'
+import { reparacionRouter } from './api/reparacion/reparacion.routes'
+import { historialRouter } from './api/historial/historial.routes'
 
 
 dotenv.config({ path: path.join(__dirname, 'config', '.env') })
@@ -32,16 +34,9 @@ app.use(cors({
 
 
 /** Middlewares Routes */
-app.use('/', (req, res, next) => {
-
-
-    return next(new ErrorHandler('No encontrado', 404))
-
-    res.status(200).json({
-        success: true,
-        message: "Está funcionando"
-    })
-})
+app.use('/api/v1', inventarioRouter)
+app.use('/api/v1', reparacionRouter)
+app.use('/api/v1', historialRouter)
 
 
 app.use(errorMiddleware)
